@@ -24,6 +24,29 @@
         <span>Stop All</span>
       </button>
 
+      <div id="vb-cable-banner" class="setup-banner" style="display: none;">
+        <div class="banner-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+        </div>
+        <div class="banner-text">
+          <strong>Virtual Cable Required</strong>
+          <span>Install VB-Cable to route audio through your mic</span>
+        </div>
+        <button id="download-vb-cable" class="banner-btn">Download</button>
+      </div>
+
+      <div class="device-selector">
+        <label for="output-device">Output Device</label>
+        <div class="device-row">
+          <select id="output-device">
+            <option value="">Default (Speakers)</option>
+          </select>
+          <button id="refresh-devices" class="refresh-btn" title="Refresh Devices">
+            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+
       <main id="sound-grid" class="scrollable-content">
         <!-- Sound cards will be dynamically inserted here -->
       </main>

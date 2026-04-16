@@ -105,6 +105,137 @@ body {
   transform: scale(0.98);
 }
 
+/* Device Selector */
+.device-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 16px;
+  margin-top: 12px;
+}
+
+.device-selector label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.device-selector select {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%23888'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.device-selector select:hover {
+  border-color: #666;
+}
+
+.device-selector select:focus {
+  border-color: var(--accent-color);
+}
+
+.device-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.device-row select {
+  flex: 1;
+}
+
+.refresh-btn {
+  background: var(--card-bg);
+  border: 1px solid #444;
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+  background: #383838;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.refresh-btn:active {
+  transform: scale(0.95);
+}
+
+/* Setup Banner */
+.setup-banner {
+  margin: 12px 16px 0;
+  padding: 12px;
+  background: rgba(255, 189, 46, 0.1);
+  border: 1px solid rgba(255, 189, 46, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.banner-icon {
+  color: var(--yellow);
+  display: flex;
+  align-items: center;
+}
+
+.banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.banner-text strong {
+  font-size: 13px;
+  color: #e0e0e0;
+}
+
+.banner-text span {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.banner-btn {
+  background: var(--yellow);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.banner-btn:hover {
+  background: #e6aa29;
+}
+
+.banner-btn:active {
+  transform: scale(0.95);
+}
+
 /* Main Content */
 .scrollable-content {
   flex: 1;

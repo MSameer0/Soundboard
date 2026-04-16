@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { PhysicalPosition } from "@tauri-apps/api/dpi";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 interface AudioFile {
   name: string;
@@ -12,6 +13,10 @@ const minimizeBtn = document.querySelector("#minimize");
 const closeBtn = document.querySelector("#close");
 const stopBtn = document.querySelector("#stop-all");
 const titlebar = document.querySelector("#titlebar") as HTMLElement;
+const deviceSelect = document.querySelector("#output-device") as HTMLSelectElement;
+const vbCableBanner = document.querySelector("#vb-cable-banner") as HTMLElement;
+const downloadVbCableBtn = document.querySelector("#download-vb-cable");
+const refreshDevicesBtn = document.querySelector("#refresh-devices");
 
 // Custom window drag (bypasses Windows Aero Shake)
 let isDragging = false;
@@ -49,8 +54,65 @@ async function setupWindowControls() {
   stopBtn?.addEventListener("click", () => {
     invoke("stop_audio");
   });
+
+  downloadVbCableBtn?.addEventListener("click", () => {
+    openUrl("https://vb-audio.com/Cable/");
+  });
+
+  refreshDevicesBtn?.addEventListener("click", () => {
+    // Optional: could add some animation feedback here
+    loadDevices();
+  });
 }
 
+async function loadDevices() {
+  try {
+    const devices = await invoke<string[]>("get_output_devices");
+    deviceSelect.innerHTML = '<option value="">Default (Speakers)</option>';
+    
+    let vbCableFound = false;
+    let vbCableName = "";
+
+    devices.forEach((name) => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      deviceSelect.appendChild(option);
+
+      const lowerName = name.toLowerCase();
+      // Check for VB-Audio Virtual Cable string
+      if (lowerName.includes("cable input") || lowerName.includes("vb-audio virtual cable")) {
+        vbCableFound = true;
+        vbCableName = name;
+      }
+    });
+
+    if (vbCableFound) {
+      // Hide banner, auto-select VB-Cable
+      if (vbCableBanner) vbCableBanner.style.display = "none";
+      deviceSelect.value = vbCableName;
+      invoke("set_output_device", { name: vbCableName });
+    } else {
+      // Show setup banner, revert to default
+      if (vbCableBanner) vbCableBanner.style.display = "flex";
+      deviceSelect.value = "";
+      invoke("set_output_device", { name: "" });
+    }
+
+  } catch (error) {
+    console.error("Failed to load devices:", error);
+  }
+}
+
+deviceSelect?.addEventListener("change", () => {
+  const selected = deviceSelect.value;
+  if (selected) {
+    invoke("set_output_device", { name: selected });
+  } else {
+    // Reset to default — pass empty string which backend treats as None
+    invoke("set_output_device", { name: "" });
+  }
+});
 
 function createSoundCard(audio: AudioFile) {
   const card = document.createElement("div");
@@ -89,5 +151,6 @@ async function loadSounds() {
 
 window.addEventListener("DOMContentLoaded", () => {
   setupWindowControls();
+  loadDevices();
   loadSounds();
 });
