@@ -2,6 +2,9 @@ use std::fs;
 use std::path::PathBuf;
 use serde::Serialize;
 use tauri::{AppHandle, Manager, Runtime};
+use std::fs::File;
+use std::io::BufReader;
+use rodio::{Decoder, OutputStream, Sink};
 
 #[derive(Serialize)]
 pub struct AudioFile {
@@ -22,7 +25,7 @@ fn get_audio_files() -> Vec<AudioFile> {
         for entry in entries.flatten() {
             let path = entry.path();
             if let Some(extension) = path.extension() {
-                if extension == "mp3" || extension == "wav" {
+                if extension == "mp3" || extension == "wav" || extension == "flac" {
                     if let Some(name) = path.file_stem() {
                         files.push(AudioFile {
                             name: name.to_string_lossy().to_string(),
@@ -39,7 +42,35 @@ fn get_audio_files() -> Vec<AudioFile> {
 #[tauri::command]
 fn play_audio(path: String) {
     println!("Playing: {}", path);
-    // Audio playback logic will go here
+
+    std::thread::spawn(move || {
+        let file = File::open(&path);
+
+        if file.is_err() {
+            println!("Failed to open file");
+            return;
+        }
+
+        let file = file.unwrap();
+
+        // KEEP STREAM ALIVE INSIDE THREAD
+        let (_stream, stream_handle) = OutputStream::try_default().unwrap();
+
+        let sink = Sink::try_new(&stream_handle).unwrap();
+
+        let source = match Decoder::new(BufReader::new(file)) {
+            Ok(s) => s,
+            Err(e) => {
+                println!("Decode failed: {:?}", e);
+                return;
+            }
+        };
+
+        sink.append(source);
+
+        // IMPORTANT: block until done
+        sink.sleep_until_end();
+    });
 }
 
 #[tauri::command]
