@@ -13,8 +13,8 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "soundboard",
-        "width": 800,
+        "title": "SoundBoard",
+        "width": 400,
         "height": 600,
         "resizable": false,
         "decorations": false,
