@@ -11,7 +11,7 @@
 
   <body>
     <div id="app">
-      <header data-tauri-drag-region class="titlebar">
+      <header class="titlebar" id="titlebar">
         <span class="title">SoundBoard</span>
         <div class="window-controls">
           <button id="minimize" class="control-btn yellow" title="Minimize"></button>
@@ -19,6 +19,11 @@
         </div>
       </header>
       
+      <button id="stop-all" class="stop-btn" title="Stop All Audio">
+        <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+        <span>Stop All</span>
+      </button>
+
       <main id="sound-grid" class="scrollable-content">
         <!-- Sound cards will be dynamically inserted here -->
       </main>
