@@ -14,7 +14,6 @@ This is a simple soundboard application built using Tauri and Rust. It's designe
 - Virtual routing support for VB-Cable, so you can send audio through your mic.
 - A "Stop All" button to silence everything immediately.
 - Automatic detection of any audio files placed in the audios folder.
-- Custom window dragging that won't trigger Windows Aero Shake.
 
 ---
 
